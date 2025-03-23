@@ -131,7 +131,7 @@ public:
   static constexpr double kManipulatorAlgaeManipulatorSpeed = 1.0;
   static constexpr double kManipulatorAlgaeOutakeSpeed = -1.0;
   static constexpr double kManipulatorAlgaeHoldSpeed = 0.4;
-  static constexpr short kManipulatorAssistID = 11;
+  static constexpr short kManipulatorAssistID = 26;
   static constexpr double kManipulatorAssistOutput = 0.1; //percentage of the coral neo output power for assisting intake (0 = 0% 1=100%)
   static constexpr double kManipulatorAssistReverseOutput = -0.1; //power output of the neo when scoring L1 (same as one above)
   static constexpr double kManipulatorCoralRerversingSpeed = 0.5; //pretty sure its inverted so positive
