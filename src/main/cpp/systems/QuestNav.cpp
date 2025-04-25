@@ -25,8 +25,14 @@ frc::Pose2d QuestNav::GetQuestPose() {
     double y = position[2];
     double theta = euler[1] * M_PI / 180.0;
     
-    return frc::Pose2d(
+    frc::Pose2d rawPose(
         frc::Translation2d(units::meter_t{x}, units::meter_t{y}),
         frc::Rotation2d(units::radian_t{theta})
     );
+
+    return rawPose.RelativeTo(m_offset);
 };
+
+void QuestNav::Calibrate() {
+    m_offset = GetQuestPose();
+}
