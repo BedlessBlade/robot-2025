@@ -38,6 +38,7 @@ private:
   std::shared_ptr<Task> m_auto;
 
   frc::Field2d m_field;
+  frc::Field2d m_QuestNavField;
 
   AutoAlignMode m_autoAlignMode = kNone;
   frc::Pose2d m_autoAlignSetpoint;

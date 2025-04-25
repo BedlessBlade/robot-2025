@@ -8,10 +8,11 @@
 #include "systems/QuestNav.h"
 
 QuestNav::QuestNav() {
-
+    
 };
 
 std::shared_ptr<nt::NetworkTable> QuestNav::table = nt::NetworkTableInstance::GetDefault().GetTable("questnav");
+frc::Pose2d m_offset = frc::Pose2d();
 
 frc::Pose2d QuestNav::GetQuestPose() {
     auto position = table->GetEntry("position").GetFloatArray({});
@@ -23,7 +24,7 @@ frc::Pose2d QuestNav::GetQuestPose() {
 
     double x = position[0];
     double y = position[2];
-    double theta = euler[1] * M_PI / 180.0;
+    double theta = 360 - (euler[1] * M_PI / 180.0);
     
     frc::Pose2d rawPose(
         frc::Translation2d(units::meter_t{x}, units::meter_t{y}),

@@ -39,6 +39,8 @@ Robot::Robot()
   m_startChooser.AddOption("3", 3);
   frc::SmartDashboard::PutData("Start Location", &m_startChooser);
 
+  frc::SmartDashboard::PutBoolean("Calibrate Pose", false);
+
   m_autoChooser.SetDefaultOption("Do Nothing", "DoNothing");
   m_autoChooser.AddOption("Cross the Line", "CrossLine");
   m_autoChooser.AddOption("One Coral", "OneCoral");
@@ -46,6 +48,7 @@ Robot::Robot()
   frc::SmartDashboard::PutData("Auto", &m_autoChooser);
 
   frc::SmartDashboard::PutData("Field", &m_field);
+  frc::SmartDashboard::PutData("QuestNav Field", &m_QuestNavField);
 
   // Call GetInstance() so the constructors get called
   Cameras::GetInstance();
@@ -332,13 +335,14 @@ Robot::Robot()
     }
 
     QuestNav nav;
-    frc::Pose2d QPose = nav.GetQuestPose();
-    std::cout
-          << QPose.X().value() << ", "
-          << QPose.Y().value() << ", "
-          << QPose.Rotation().Degrees().value() << "°" 
-          << std::endl;
-
+    frc::Pose2d QuestPose = nav.GetQuestPose();
+    if (frc::SmartDashboard::GetBoolean("Calibrate Pose", false)) {
+      nav.Calibrate();
+      frc::SmartDashboard::PutBoolean("Calibrate Pose", false);
+      std::cout << "Recalibrated" << std::endl;
+    };
+    
+    m_QuestNavField.SetRobotPose(QuestPose);
 
 
 
