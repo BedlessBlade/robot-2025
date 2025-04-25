@@ -5,6 +5,9 @@
 #include <frc/geometry/Pose2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <memory>
+#include <networktables/NetworkTableInstance.h>
+#include <frc/geometry/Rotation2d.h>
+
 
 #include "Constants.h"
 #include "Controllers.h"
@@ -18,6 +21,7 @@
 #include "systems/Elevator.h"
 #include "systems/Manipulator.h"
 #include "systems/SwerveDrive.h"
+
 
 // This gets called first. So, initialize everything here.
 Robot::Robot()
@@ -33,6 +37,8 @@ Robot::Robot()
   m_startChooser.AddOption("2", 2);
   m_startChooser.AddOption("3", 3);
   frc::SmartDashboard::PutData("Start Location", &m_startChooser);
+
+  static auto table = nt::NetworkTableInstance::GetDefault().GetTable("QuestNav");
 
   m_autoChooser.SetDefaultOption("Do Nothing", "DoNothing");
   m_autoChooser.AddOption("Cross the Line", "CrossLine");
@@ -78,6 +84,8 @@ Robot::Robot()
       }
 
       m_field.SetRobotPose(SwerveDrive::GetInstance().GetPose2d());
+
+
 
       // Check this before sending drive velocities
       if (Controllers::GetInstance()
@@ -323,6 +331,19 @@ Robot::Robot()
         m_braking = false;
       }
     }
+    
+    std::vector<double> defaultPose{0.0, 0.0, 0.0};
+    std::vector<double> poseData = table->GetEntry("Pose").GetDoubleArray(defaultPose);
+
+    double QuestX = poseData[0];
+    double QuestY = poseData[1];
+
+    std::cout << "QuestNav Pose - x: " << QuestX << " Y: " << QuestY << std::endl;
+
+
+    frc::SmartDashboard::PutNumber("QuestNav X", QuestX);
+    frc::SmartDashboard::PutNumber("QuestNav Y", QuestY);
+
 
     Cameras::GetInstance().Update(mode, t);
     SwerveDrive::GetInstance().Update(mode, t);
