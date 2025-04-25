@@ -333,10 +333,10 @@ Robot::Robot()
 
     QuestNav nav;
     frc::Pose2d QPose = nav.GetQuestPose();
-    std::cout << "Pose2d: (" 
+    std::cout
           << QPose.X().value() << ", "
           << QPose.Y().value() << ", "
-          << QPose.Rotation().Degrees().value() << "°)" 
+          << QPose.Rotation().Degrees().value() << "°" 
           << std::endl;
 
 
