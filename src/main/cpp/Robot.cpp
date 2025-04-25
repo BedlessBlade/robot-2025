@@ -21,6 +21,7 @@
 #include "systems/Elevator.h"
 #include "systems/Manipulator.h"
 #include "systems/SwerveDrive.h"
+#include "systems/QuestNav.h"
 
 
 // This gets called first. So, initialize everything here.
@@ -37,8 +38,6 @@ Robot::Robot()
   m_startChooser.AddOption("2", 2);
   m_startChooser.AddOption("3", 3);
   frc::SmartDashboard::PutData("Start Location", &m_startChooser);
-
-  static auto table = nt::NetworkTableInstance::GetDefault().GetTable("QuestNav");
 
   m_autoChooser.SetDefaultOption("Do Nothing", "DoNothing");
   m_autoChooser.AddOption("Cross the Line", "CrossLine");
@@ -331,18 +330,17 @@ Robot::Robot()
         m_braking = false;
       }
     }
-    
-    std::vector<double> defaultPose{0.0, 0.0, 0.0};
-    std::vector<double> poseData = table->GetEntry("Pose").GetDoubleArray(defaultPose);
 
-    double QuestX = poseData[0];
-    double QuestY = poseData[1];
+    QuestNav nav;
+    frc::Pose2d QPose = nav.GetQuestPose();
+    std::cout << "Pose2d: (" 
+          << QPose.X().value() << ", "
+          << QPose.Y().value() << ", "
+          << QPose.Rotation().Degrees().value() << "°)" 
+          << std::endl;
 
-    std::cout << "QuestNav Pose - x: " << QuestX << " Y: " << QuestY << std::endl;
 
 
-    frc::SmartDashboard::PutNumber("QuestNav X", QuestX);
-    frc::SmartDashboard::PutNumber("QuestNav Y", QuestY);
 
 
     Cameras::GetInstance().Update(mode, t);
