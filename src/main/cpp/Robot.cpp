@@ -343,7 +343,10 @@ Robot::Robot()
     };
     
     m_QuestNavField.SetRobotPose(QuestPose);
-
+    std::cout << "X:Y:Pitch : " << QuestPose.X().value() << ", "
+                                << QuestPose.Y().value() << ", "
+                                << QuestPose.Rotation().Degrees().value()
+                                << std::endl;
 
 
 
